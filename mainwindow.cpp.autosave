@@ -189,7 +189,15 @@ void MainWindow::on_getTerm_clicked()
     }
 }
 
-void MainWindow::on_linearSerachOrigDocs_clicked()
+void MainWindow::on_linearSearchOrigDocs_clicked()
 {
-    
+   QListIterator<Document> docIter(docList);
+
+   term = term.toLower();
+   
+   while(docIter.hasNext())
+   {
+        //TODO give documents List for their words
+   }
+
 }

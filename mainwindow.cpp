@@ -191,5 +191,11 @@ void MainWindow::on_getTerm_clicked()
 
 void MainWindow::on_linearSerachOrigDocs_clicked()
 {
+   QListIterator<Document> docIter(docList);
+
+   while(docIter.hasNext())
+   {
+
+   }
 
 }

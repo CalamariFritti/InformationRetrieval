@@ -32,7 +32,7 @@ private slots:
 
     void on_getTerm_clicked();
 
-    void on_linearSerachOrigDocs_clicked();
+    void on_linearSearchOrigDocs_clicked();
 
 private:
     Ui::MainWindow *ui;
@@ -46,6 +46,8 @@ private:
     QList<Document> docList;
 
     QList<Document> stoppWordsEliminatedList;
+
+    QList<Document> resultsLinear;
 
     QString term = "";
 
