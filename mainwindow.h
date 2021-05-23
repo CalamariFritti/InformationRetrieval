@@ -34,6 +34,9 @@ private slots:
 
     void on_linearSearchOrigDocs_clicked();
 
+    void on_linearSearchStopDocs_clicked();
+
+    void linearSearch(QList<Document> searchList);
 private:
     Ui::MainWindow *ui;
 

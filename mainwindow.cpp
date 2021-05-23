@@ -54,12 +54,21 @@ void MainWindow::loadFile(QString &fileName)
         QString read = in.readAll();
         if(!isStopWord){
             input.setContent(read);
+            ui->textBrowser->clear();
+            ui->textBrowser->append("Es wurde eine Datei geladen:\n\n"
+                                    + fileName +"\n\n");
+            ui->textBrowser->append("Sie können diese datei nun zur Kollektion der "
+                                    "Originaldokumente wandeln.");
+            ui->textBrowser->append("(\"Erzeuge Originaldokumente\"-Button)");
         }else{
             stoppWords.setContent(read);
+            ui->textBrowser->clear();
+            ui->textBrowser->append("Es wurde eine Datei geladen:\n\n"
+                                    + fileName +"\n\n");
+            ui->textBrowser->append("Sie können jetzt die Stoppworteliminierung "
+                                    " für die Original-Dokumente durchführen.");
         }
     }
-    ui->textBrowser->clear();
-    ui->textBrowser->append("Datei geladen:\n\n" + fileName +"\n\n");
 }
 
 void MainWindow::on_createOriginalDocs_clicked()
@@ -91,7 +100,6 @@ void MainWindow::on_createOriginalDocs_clicked()
 
         QString fileName = titleText[0].toLower().trimmed().replace(" ","_");
         QString save = path + "/" + fileName + ".txt";
-
         QFile file(save);
 
         if (!file.open(QIODevice::WriteOnly))
@@ -108,12 +116,20 @@ void MainWindow::on_createOriginalDocs_clicked()
 
         docList.append(doc);
     }
+    ui->textBrowser->clear();
     ui->textBrowser->append("Es wurden\n    "
                             + QString::number(docList.length())
                             + "\nOriginaldokumente erstellt.\n");
     ui->textBrowser->append("Die Originaldokumente wurden hier abgelegt:\n\n"
                             + path
-                            + "\n    abgelegt.");
+                            + "\n    abgelegt.\n\n");
+    ui->textBrowser->append("Sie können jetzt bereits eine lineare Suche in "
+                            "den Original-Dokumenten vornehmen.\n"
+                            "Hierzu müssen Sie zunächst einen Suchbegriff "
+                            "eingeben."
+                            "\n\nAlternativ können die Original-Dokumente "
+                            "jetzt um Stopp-Worte bereinigt werden! \n"
+                            "Hierfür bitte zunächst eine Stoppwortliste laden.");
 }
 
 void MainWindow::on_loadStoppWordList_clicked()
@@ -125,15 +141,17 @@ void MainWindow::on_loadStoppWordList_clicked()
 
 void MainWindow::on_eliminateStopWords_clicked()
 {
+    ui->textBrowser->clear();
+    ui->textBrowser->append("Eliminieren Stoppworte aus den Originaldokumenten...");
+
     QListIterator<Document> docIter(docList);
-    while(docIter.hasNext()){
+    while(docIter.hasNext())
+    {
         Document doc;
         doc = docIter.next();
-
         doc.stopWordElimination(stoppWords);
-
         stoppWordsEliminatedList.append(doc);
-
+        ui->textBrowser->append("...");
     }
     ui->textBrowser->append("\nStoppworteliminierung durchgeführt für Dokumente:\n"
                             + QString::number(stoppWordsEliminatedList.length()));
@@ -156,6 +174,7 @@ void MainWindow::saveStopWordDocs()
     {
         Document doc = stoppWordIterator.next();
         QString fileName = doc.title.toLower().trimmed().replace(" ","_");
+        qDebug() << "this filename too long? " << fileName;
         QString save = path + "/" + fileName + ".txt";
         QFile file(save);
 
@@ -167,10 +186,11 @@ void MainWindow::saveStopWordDocs()
             return;
         }
         QString out = doc.title + "\n\n" + doc.content;
+        qDebug() << "\ncontent?" << doc.content;
         file.write(out.toUtf8());
         file.close();
     }
-
+    ui->textBrowser->clear();
     ui->textBrowser->append(
             "\nDokumente mit eliminierten Stopp-Wörtern gespeichert unter:\n"
             + QString::number(stoppWordsEliminatedList.length())
@@ -186,16 +206,45 @@ void MainWindow::on_getTerm_clicked()
         QMessageBox::warning(this,"Kein Begriff eingegeben!","Die Eingabe darf nicht leer sein!",QMessageBox::Ok);
     }else{
         ui->textBrowser->append("Suchbegriff: \"" + term + "\" eingegeben!");
+        term = term.toLower();
     }
 }
 
-void MainWindow::on_linearSerachOrigDocs_clicked()
+void MainWindow::on_linearSearchOrigDocs_clicked()
 {
-   QListIterator<Document> docIter(docList);
+    ui->textBrowser->clear();
+    ui->textBrowser->append("Lineare Suche in den Original Dokumenten gestartet:\n\n");
+    ui->textBrowser->append("Folgende Dokumente enthalten den gesuchten Begriff:");
 
-   while(docIter.hasNext())
-   {
+    linearSearch(docList);
+}
 
-   }
+void MainWindow::on_linearSearchStopDocs_clicked()
+{
+    ui->textBrowser->clear();
+    ui->textBrowser->append("Lineare Suche in den Stoppwort-Dokumenten gestartet:\n\n");
+    ui->textBrowser->append("Folgende Dokumente enthalten den gesuchten Begriff:");
+    linearSearch(stoppWordsEliminatedList);
+}
 
+void MainWindow::linearSearch(QList<Document> searchList){
+
+    QListIterator<Document> searchListIter(searchList);
+    resultsLinear.clear();
+
+    while(searchListIter.hasNext())
+    {
+        Document activeDoc = searchListIter.next();
+        activeDoc.removeApostrophes();
+        activeDoc.removeNonLetters();
+        activeDoc.contentList = activeDoc.makeContentList();
+        qDebug() << "searched this content: " << activeDoc.contentList.join(",");
+        qDebug() << "for this word: " << term;
+        qDebug() << "result: " << activeDoc.contentList.contains(term);
+        if(activeDoc.contentList.contains(term)){
+            resultsLinear.append(activeDoc);
+            qDebug() << "found one: " << resultsLinear.last().getTitle();
+            ui->textBrowser->append(resultsLinear.last().getTitle());
+        }
+    }
 }

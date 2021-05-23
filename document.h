@@ -10,17 +10,20 @@ public:
     Document();
 
     QString content;
+    QString reducedForStopWords;
     QString title;
+
+    QStringList contentList;
 
 public slots:
     void setContent(QString content);
     void setTitle(QString title);
-
+    void stopWordElimination(Document stopWordList);
+    void removeNonLetters();
+    void removeApostrophes();
+    QStringList makeContentList();
     QString getContent();
     QString getTitle();
-
-    void stopWordElimination(Document stopWordList);
-
 
 };
 

@@ -48,20 +48,20 @@ void Document::setTitle(QString title)
  */
 void Document::stopWordElimination(Document stopWords)
 {
-   qDebug() << "original content:\n" << content;
+    stopWords.removeApostrophes();
+    QStringList stopWordList = stopWords.makeContentList();
+    stopWordList.removeDuplicates();
 
-    QList<QString> stopWordList = stopWords.getContent().toLower().split("\n");
+    this->removeApostrophes();
+    this->removeNonLetters();
+
+    //keep a list of
+    this->contentList = this->makeContentList();
+
+    this->contentList.removeAll("");
+    stopWordList.removeAll("");
+
     QListIterator<QString> stopWordListIterator(stopWordList);
-    //treatment for apostroph, remove apostroph plus following letter
-    content = content.toLower();
-    content.remove(QRegExp("(['])([a-z])"));
-    content.replace("\n"," ");
-
-    //transform text for comparability, removes everything that is not a letter nor number
-    //but keeps the spaces (for splitting)
-    content.remove(QRegExp("[^A-Za-z0-9 ]+"));
-
-    QList<QString> contentList = this->content.toLower().split(" ");
     QMutableListIterator<QString> contentListIterator(contentList);
 
     //for every word in stop word list
@@ -73,7 +73,7 @@ void Document::stopWordElimination(Document stopWords)
             QString stopWord = stopWordListIterator.peekNext();
             QString contentWord = contentListIterator.peekNext();
 
-            qDebug() << "\n\nstoppword: " << stopWord;
+            qDebug() << "\nstoppword: " << stopWord;
             qDebug() << "contentword: " << contentWord;
 
             //if match, remove
@@ -93,5 +93,34 @@ void Document::stopWordElimination(Document stopWords)
     QString eliminated = contentList.join(" ");
     this->content = eliminated;
 
-    qDebug() << "eliminated and joined form list:\n\n" << eliminated << "\n\n";
 }
+//treatment for apostroph, remove apostroph plus following letter(s)
+void Document::removeApostrophes()
+{
+    this->reducedForStopWords = "";
+    if(!this->title.isEmpty()){
+        this->title = this->title.toLower();
+        this->title.remove(QRegExp("(['])([a-z]+)"));
+        this->title.replace("\n"," ");
+    }
+    this->content = this->content.toLower();
+    this->content.remove(QRegExp("(['])([a-z]+)"));
+    this->content.replace("\n"," ");
+}
+//transform text for comparability, removes everything that is not a letter nor number
+//but keeps the spaces (for splitting)
+void Document::removeNonLetters(){
+    if(!this->title.isEmpty()){
+        this->title.remove(QRegExp("[^A-Za-z0-9 ]+"));
+        this->title = this->title.trimmed();
+    }
+    this->content.remove(QRegExp("[^A-Za-z0-9 ]+"));
+    this->content = this->content.trimmed();
+}
+
+QStringList Document::makeContentList()
+{
+    return this->content.split(QRegExp("[ ]+"));
+}
+
+
