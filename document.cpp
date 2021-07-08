@@ -16,6 +16,16 @@ Document::Document()
 
 }
 
+int Document::getId()
+{
+    return this->id;
+}
+
+void Document::setId(int id)
+{
+    this->id = id;
+}
+
 QString Document::getContent()
 {
     return this->content;
@@ -36,6 +46,18 @@ void Document::setTitle(QString title)
     this->title = title;
 }
 
+void Document::setContentList()
+{
+    this->contentList = makeContentList(this->content);
+}
+
+void Document::setCleanContentList()
+{
+    QString cleaned = this->content;
+    cleaned = this->removeApostrophes(cleaned);
+    cleaned = this->removeNonLetters(cleaned);
+    this->cleanContentList = makeContentList(cleaned);
+}
 
 /*
  *  parameter: Document-type, contents is a list of stopwords
@@ -48,21 +70,21 @@ void Document::setTitle(QString title)
  */
 void Document::stopWordElimination(Document stopWords)
 {
-    stopWords.removeApostrophes();
-    QStringList stopWordList = stopWords.makeContentList();
+    stopWords.setContent(stopWords.removeApostrophes(stopWords.content));
+    stopWords.setContent(stopWords.removeNonLetters(stopWords.content));
+    QStringList stopWordList = stopWords.makeContentList(stopWords.content);
     stopWordList.removeDuplicates();
 
-    this->removeApostrophes();
-    this->removeNonLetters();
-
     //keep a list of
-    this->contentList = this->makeContentList();
+    this->reducedForStopWords = removeApostrophes(this->content);
+    this->reducedForStopWords = removeNonLetters(this->reducedForStopWords);
+    this->eliminatedList = this->reducedForStopWords.split(QRegExp("[ ]+"));
 
-    this->contentList.removeAll("");
+    this->eliminatedList.removeAll("");
     stopWordList.removeAll("");
 
     QListIterator<QString> stopWordListIterator(stopWordList);
-    QMutableListIterator<QString> contentListIterator(contentList);
+    QMutableListIterator<QString> contentListIterator(eliminatedList);
 
     //for every word in stop word list
     while(stopWordListIterator.hasNext())
@@ -73,8 +95,8 @@ void Document::stopWordElimination(Document stopWords)
             QString stopWord = stopWordListIterator.peekNext();
             QString contentWord = contentListIterator.peekNext();
 
-            qDebug() << "\nstoppword: " << stopWord;
-            qDebug() << "contentword: " << contentWord;
+           // qDebug() << "contentWord: " << contentWord;
+           // qDebug() << "stopWord: " << stopWord;
 
             //if match, remove
             if(stopWord == contentWord)
@@ -85,42 +107,49 @@ void Document::stopWordElimination(Document stopWords)
                 contentListIterator.next();
             }
         }
-        qDebug() << "--------------------------------------------------------------------------------------------------------------";
 
         stopWordListIterator.next();
         contentListIterator.toFront();
     }
-    QString eliminated = contentList.join(" ");
-    this->content = eliminated;
+    QString eliminated = eliminatedList.join(" ");
+    this->reducedForStopWords = eliminated;
 
 }
 //treatment for apostroph, remove apostroph plus following letter(s)
-void Document::removeApostrophes()
+QString Document::removeApostrophes(QString input)
 {
-    this->reducedForStopWords = "";
-    if(!this->title.isEmpty()){
-        this->title = this->title.toLower();
-        this->title.remove(QRegExp("(['])([a-z]+)"));
-        this->title.replace("\n"," ");
-    }
-    this->content = this->content.toLower();
-    this->content.remove(QRegExp("(['])([a-z]+)"));
-    this->content.replace("\n"," ");
+        input = input.toLower();
+        input.remove(QRegExp("(['])([a-z]+)"));
+        input.replace("\n"," ");
+        return input;
 }
 //transform text for comparability, removes everything that is not a letter nor number
 //but keeps the spaces (for splitting)
-void Document::removeNonLetters(){
-    if(!this->title.isEmpty()){
-        this->title.remove(QRegExp("[^A-Za-z0-9 ]+"));
-        this->title = this->title.trimmed();
-    }
-    this->content.remove(QRegExp("[^A-Za-z0-9 ]+"));
-    this->content = this->content.trimmed();
-}
-
-QStringList Document::makeContentList()
+QString Document::removeNonLetters(QString input)
 {
-    return this->content.split(QRegExp("[ ]+"));
+        input.remove(QRegExp("[^A-Za-z0-9 ]+"));
+        input = input.trimmed();
+        return input;
 }
 
+QStringList Document::makeContentList(QString input)
+{
+    return input.split(QRegExp("[ ]+"));
+}
 
+/*********************************************************************
+ *
+ * Stammform- Reduktion (Stemming) nach Porter-Algorithmus.
+ *
+*********************************************************************/
+
+void Document::porterStemming(){
+    PorterStem *Stemmer = new PorterStem();
+
+    for(QString word : this->contentList){
+         QString result = Stemmer->loadWord(word);
+         qDebug() << "result : " << result;
+         this->porterList.append(result);
+     }
+
+}

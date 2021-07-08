@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>800</width>
-    <height>600</height>
+    <width>1000</width>
+    <height>755</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -19,8 +19,8 @@
      <rect>
       <x>10</x>
       <y>0</y>
-      <width>541</width>
-      <height>301</height>
+      <width>651</width>
+      <height>351</height>
      </rect>
     </property>
     <property name="html">
@@ -36,7 +36,7 @@ p, li { white-space: pre-wrap; }
    <widget class="QPushButton" name="eliminateStopWords">
     <property name="geometry">
      <rect>
-      <x>560</x>
+      <x>670</x>
       <y>180</y>
       <width>220</width>
       <height>60</height>
@@ -50,7 +50,7 @@ jetzt durchführen</string>
    <widget class="QPushButton" name="loadFileButton">
     <property name="geometry">
      <rect>
-      <x>560</x>
+      <x>670</x>
       <y>0</y>
       <width>220</width>
       <height>60</height>
@@ -63,7 +63,7 @@ jetzt durchführen</string>
    <widget class="QPushButton" name="loadStoppWordList">
     <property name="geometry">
      <rect>
-      <x>560</x>
+      <x>670</x>
       <y>120</y>
       <width>220</width>
       <height>60</height>
@@ -76,7 +76,7 @@ jetzt durchführen</string>
    <widget class="QPushButton" name="createOriginalDocs">
     <property name="geometry">
      <rect>
-      <x>560</x>
+      <x>670</x>
       <y>60</y>
       <width>220</width>
       <height>60</height>
@@ -89,21 +89,21 @@ jetzt durchführen</string>
    <widget class="QPushButton" name="getTerm">
     <property name="geometry">
      <rect>
-      <x>560</x>
-      <y>310</y>
+      <x>60</x>
+      <y>430</y>
       <width>220</width>
       <height>60</height>
      </rect>
     </property>
     <property name="text">
-     <string>Suchbegriff eingeben</string>
+     <string>Suchbegriff(e) eingeben</string>
     </property>
    </widget>
    <widget class="QPushButton" name="linearSearchOrigDocs">
     <property name="geometry">
      <rect>
-      <x>560</x>
-      <y>370</y>
+      <x>10</x>
+      <y>500</y>
       <width>220</width>
       <height>60</height>
      </rect>
@@ -116,8 +116,8 @@ Originaldokuementen</string>
    <widget class="QPushButton" name="linearSearchStopDocs">
     <property name="geometry">
      <rect>
-      <x>560</x>
-      <y>430</y>
+      <x>230</x>
+      <y>500</y>
       <width>220</width>
       <height>60</height>
      </rect>
@@ -125,6 +125,196 @@ Originaldokuementen</string>
     <property name="text">
      <string>Lineare Suche in
 Stopwort-Dokumenten</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="recall">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>630</y>
+      <width>220</width>
+      <height>60</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Recall und Precision
+ Berechnung</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="precision">
+    <property name="geometry">
+     <rect>
+      <x>230</x>
+      <y>630</y>
+      <width>220</width>
+      <height>60</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>&lt;dummy&gt;</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="porterStem">
+    <property name="geometry">
+     <rect>
+      <x>670</x>
+      <y>360</y>
+      <width>220</width>
+      <height>60</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Porter-Stemming
+jetzt durchführen</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="linearSearchStemmDocs">
+    <property name="geometry">
+     <rect>
+      <x>110</x>
+      <y>560</y>
+      <width>220</width>
+      <height>60</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Lineare Suche in
+Stemming-Dokumenten</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="invertListOrigDocs">
+    <property name="geometry">
+     <rect>
+      <x>670</x>
+      <y>240</y>
+      <width>220</width>
+      <height>60</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Invertierte Liste aus 
+Originaldokumenten</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="invertListStoppDocs">
+    <property name="geometry">
+     <rect>
+      <x>670</x>
+      <y>300</y>
+      <width>220</width>
+      <height>60</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Invertierte Liste nach 
+Stoppworteliminierung</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="linearSearchInvertList">
+    <property name="geometry">
+     <rect>
+      <x>450</x>
+      <y>500</y>
+      <width>220</width>
+      <height>60</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Suche in invertierter
+ Liste aus Original-Dokumenten</string>
+    </property>
+   </widget>
+   <widget class="QTextBrowser" name="termBrowser">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>370</y>
+      <width>321</width>
+      <height>51</height>
+     </rect>
+    </property>
+    <property name="html">
+     <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
+&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
+p, li { white-space: pre-wrap; }
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'Ubuntu'; font-size:10pt; font-weight:400; font-style:normal;&quot;&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Es können maximal 2 Suchbegriffe, getrennt durch Leerzeichen eingegeben werden.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+    </property>
+   </widget>
+   <widget class="QTextBrowser" name="modeBrowser">
+    <property name="geometry">
+     <rect>
+      <x>345</x>
+      <y>370</y>
+      <width>321</width>
+      <height>51</height>
+     </rect>
+    </property>
+    <property name="html">
+     <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
+&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
+p, li { white-space: pre-wrap; }
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'Ubuntu'; font-size:10pt; font-weight:400; font-style:normal;&quot;&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Regulär (1 Suchbegriff), Konjunktion (2 Suchbegriffe), Disjunktion (2 Suchbegriffe)&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="label">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>350</y>
+      <width>321</width>
+      <height>20</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Suchbegriffe</string>
+    </property>
+    <property name="alignment">
+     <set>Qt::AlignCenter</set>
+    </property>
+   </widget>
+   <widget class="QLabel" name="label_2">
+    <property name="geometry">
+     <rect>
+      <x>350</x>
+      <y>350</y>
+      <width>311</width>
+      <height>20</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Suchmodus</string>
+    </property>
+    <property name="alignment">
+     <set>Qt::AlignCenter</set>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="getMode">
+    <property name="geometry">
+     <rect>
+      <x>370</x>
+      <y>430</y>
+      <width>220</width>
+      <height>60</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Modus wechseln</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="linearSearchInvertListStop">
+    <property name="geometry">
+     <rect>
+      <x>670</x>
+      <y>500</y>
+      <width>220</width>
+      <height>60</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Suche in invertierter
+ Liste aus Stoppwort-Dokumenten</string>
     </property>
    </widget>
   </widget>
@@ -142,7 +332,7 @@ Stopwort-Dokumenten</string>
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>800</width>
+     <width>1000</width>
      <height>22</height>
     </rect>
    </property>

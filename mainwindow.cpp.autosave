@@ -572,13 +572,13 @@ void MainWindow::on_porterStem_clicked()
 {
     ui->textBrowser->clear();
     ui->textBrowser->setText("Stemming nach Porter durchgeführt: ");
-
+/*
     for(Document doc : this->docList){
         qDebug() << "eli,List" << doc.contentList;
         doc.porterStemming();
     }
 
-/*
+
     QStringList list = {"relational", "appetizer", "realization",
                        "procurement", "defendant", "racism","objective"};
 */

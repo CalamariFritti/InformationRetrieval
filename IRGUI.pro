@@ -26,11 +26,17 @@ DEFINES += QT_DEPRECATED_WARNINGS
 SOURCES += \
         main.cpp \
         mainwindow.cpp \
-    document.cpp
+    document.cpp \
+    porterstem.cpp \
+    calculator.cpp \
+    invertedlist.cpp
 
 HEADERS += \
         mainwindow.h \
-    document.h
+    document.h \
+    porterstem.h \
+    calculator.h \
+    invertedlist.h
 
 FORMS += \
         mainwindow.ui
